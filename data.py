@@ -22,6 +22,6 @@ def load_datasets(path):
     return BackboneDataset(path, "train"), BackboneDataset(path, "val")
 
 def coordinate_scale(dataset):
-    return float(dataset.coords.doubles().square().mean().sqrt())
+    return float(dataset.coords.double().square().mean().sqrt())
 
     
