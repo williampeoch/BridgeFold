@@ -3,53 +3,42 @@ from torch.nn import functional as F
 
 # tensor are like -> [B, L, 3]
 
-x = torch.tensor([
-    [
-        [0., 0., 0.],
-        [0., 0., 0.],
-        [0., 0., 0.],
-        [0., 0., 0.],
-    ],
+# x = torch.tensor([
+#     [
+#         [0., 0., 0.],
+#         [0., 0., 0.],
+#         [0., 0., 0.],
+#         [0., 0., 0.],
+#     ],
 
-    [
-        [-3., 0., 0.],
-        [ 3., 0., 0.],
-        [-3., 0., 0.],
-        [ 3., 0., 0.],
-    ],
+#     [
+#         [-3., 0., 0.],
+#         [ 3., 0., 0.],
+#         [-3., 0., 0.],
+#         [ 3., 0., 0.],
+#     ],
 
-    [
-        [ 1.,  1., 0.],
-        [ 1., -1., 0.],
-        [-1.,  1., 0.],
-        [-1., -1., 0.],
-    ],
+#     [
+#         [ 1.,  1., 0.],
+#         [ 1., -1., 0.],
+#         [-1.,  1., 0.],
+#         [-1., -1., 0.],
+#     ],
 
-    [
-        [ 8., -4., 7.],
-        [14., -4., 7.],
-        [ 8., -4., 7.],
-        [14., -4., 7.],
-    ],
-])
+#     [
+#         [ 8., -4., 7.],
+#         [14., -4., 7.],
+#         [ 8., -4., 7.],
+#         [14., -4., 7.],
+#     ],
+# ])
 
 def center(x):
     return x - x.mean(dim=-2, keepdim=True)
 
-
-def radius_of_gyration(x):
-    centered = center(x)
-    return torch.sqrt(centered.square().sum(-1).mean(-1) + 1e-12)
 
 def resize_backbone(x, length):
     if x.shape[-2] == length:
         return x
     x_t = x.transpose(1, 2)
     return F.interpolate(x_t, size=length, mode="linear", align_corners=False).transpose(1, 2)
-
-def bond_directions(x):
-    bonds = x[:, 1:] - x[:, :-1]
-    return bonds / torch.linalg.vector_norm(bonds, dim=-1, keepdim=True).clamp_min(1e-8)
-
-
-print(bond_directions(x))
