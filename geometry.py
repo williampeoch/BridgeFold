@@ -47,3 +47,9 @@ def resize_backbone(x, length):
     x_t = x.transpose(1, 2)
     return F.interpolate(x_t, size=length, mode="linear", align_corners=False).transpose(1, 2)
 
+def bond_directions(x):
+    bonds = x[:, 1:] - x[:, :-1]
+    return bonds / torch.linalg.vector_norm(bonds, dim=-1, keepdim=True).clamp_min(1e-8)
+
+
+print(bond_directions(x))
