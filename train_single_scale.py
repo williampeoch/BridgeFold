@@ -24,11 +24,11 @@ batch = next(iter(loader)).to(device)
 target = center(batch) / scale
 
 model = SingleScaleFlow().to(device)
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
 
 losses = []
 
-for step in range(5001):
+for step in range(501):
     optimizer.zero_grad()
 
     loss = flow_matching_loss(model, target)
